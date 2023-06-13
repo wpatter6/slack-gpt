@@ -1,6 +1,7 @@
 import { config } from "dotenv-flow";
-import { initialize } from "./bot";
 
 config();
+
+import { initialize } from "./bot";
 
 initialize();
