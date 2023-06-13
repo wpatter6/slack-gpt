@@ -2,6 +2,8 @@ import { App } from "@slack/bolt";
 import { BasicMessage } from "../types";
 import { getAIResponse } from "../ai";
 
+const SUPPORT_PERSON_ID = process.env.SUPPORT_PERSON_ID;
+
 export const initAppEvents = (app: App) => {
   app.message(/.*/, async ({ message, say, context: { botUserId } }) => {
     // These messages didn't come from a user
@@ -63,38 +65,40 @@ export const initAppEvents = (app: App) => {
       await say({
         thread_ts,
         text,
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text,
-            },
-            accessory: {
-              type: "button",
+        ...(!!process.env.SUPPORT_PERSON_ID && {
+          blocks: [
+            {
+              type: "section",
               text: {
-                type: "plain_text",
-                text: "😕",
+                type: "mrkdwn",
+                text,
               },
-              action_id: "help_click",
-              confirm: {
-                title: { type: "plain_text", text: "Get help" },
+              accessory: {
+                type: "button",
                 text: {
                   type: "plain_text",
-                  text: "Would you like to speak with a person?",
+                  text: "😕",
                 },
+                action_id: "help_click",
                 confirm: {
-                  type: "plain_text",
-                  text: "Yes",
-                },
-                deny: {
-                  type: "plain_text",
-                  text: "No",
+                  title: { type: "plain_text", text: "Get help" },
+                  text: {
+                    type: "plain_text",
+                    text: "Would you like to speak with a person?",
+                  },
+                  confirm: {
+                    type: "plain_text",
+                    text: "Yes",
+                  },
+                  deny: {
+                    type: "plain_text",
+                    text: "No",
+                  },
                 },
               },
             },
-          },
-        ],
+          ],
+        }),
       });
     }
   });
