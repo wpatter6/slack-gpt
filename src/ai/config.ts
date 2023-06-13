@@ -1,6 +1,6 @@
 export const getConfig = () => ({
   apiKey: process.env.OPENAI_API_KEY || "",
-  model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
+  model: process.env.OPENAI_MODEL || "text-davinci-003",
   behavior: process.env.OPENAI_BEHAVIOR || "friendly, helpful and professional",
   name: process.env.OPENAI_NAME || "Davinci",
   temperature: process.env.OPENAI_TEMPERATURE
