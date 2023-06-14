@@ -28,6 +28,7 @@ im:write
 links:read
 metadata.message:read
 mpim:read
+reactions:write
 ```
 
 - Within "Event Subscriptions" ensure the following bot events are subscribed:

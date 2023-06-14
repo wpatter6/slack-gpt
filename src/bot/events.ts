@@ -2,7 +2,7 @@ import { App } from "@slack/bolt";
 import { BasicMessage } from "../types";
 import { getAIResponse } from "../ai";
 
-const SUPPORT_PERSON_ID = process.env.SUPPORT_PERSON_ID;
+const REACTION = process.env.PROCESSING_REACTION || "thinking_face";
 
 export const initAppEvents = (app: App) => {
   app.message(/.*/, async ({ message, say, context: { botUserId } }) => {
@@ -59,8 +59,19 @@ export const initAppEvents = (app: App) => {
     }
 
     if (shouldRespond) {
-      const text = await getAIResponse(messages, botUserId);
       const thread_ts = message.thread_ts ?? message.ts;
+
+      const reactionArg = {
+        channel: message.channel,
+        name: REACTION,
+        timestamp: thread_ts,
+      };
+
+      try {
+        await app.client.reactions.add(reactionArg);
+      } catch {}
+
+      const text = await getAIResponse(messages, botUserId);
 
       await say({
         thread_ts,
@@ -100,6 +111,10 @@ export const initAppEvents = (app: App) => {
           ],
         }),
       });
+
+      try {
+        await app.client.reactions.remove(reactionArg);
+      } catch {}
     }
   });
 
