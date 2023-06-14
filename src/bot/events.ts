@@ -64,7 +64,7 @@ export const initAppEvents = (app: App) => {
       const reactionArg = {
         channel: message.channel,
         name: REACTION,
-        timestamp: thread_ts,
+        timestamp: message.ts,
       };
 
       try {
