@@ -16,6 +16,18 @@ export const getAIResponse = async (
   botId: string
 ): Promise<string> => {
   try {
+    if (msgs.length === 1) {
+      let newText = msgs[0].text;
+
+      if (CONFIG.prepend) {
+        newText = CONFIG.prepend + " " + newText;
+      }
+      if (CONFIG.append) {
+        newText = newText + " " + CONFIG.append;
+      }
+      msgs[0].text = newText;
+    }
+
     const openai = new OpenAIApi(configuration);
     const messages = getMessageChain(msgs, botId);
     log(`Creating chat completion (${messages.length} messages)`);

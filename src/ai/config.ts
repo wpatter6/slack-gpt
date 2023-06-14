@@ -12,4 +12,6 @@ export const getConfig = () => ({
   conversationalDepth: process.env.MAX_CONVERSATIONAL_DEPTH
     ? Number(process.env.OPENAI_CONVERSATIONAL_DEPTH)
     : 0,
+  prepend: process.env.THREAD_PREPEND,
+  append: process.env.THREAD_APPEND,
 });
