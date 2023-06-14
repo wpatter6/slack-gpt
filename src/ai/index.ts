@@ -5,6 +5,8 @@ import { log } from "../util";
 
 const CONFIG = getConfig();
 
+const AS_A_REGEX = /^as a[^,]*, /i;
+
 log(`ai config`, { ...CONFIG, apiKey: "****" });
 
 const configuration = new Configuration({ apiKey: CONFIG.apiKey });
@@ -26,7 +28,9 @@ export const getAIResponse = async (
 
     log(`Chat completion result`, result.data);
 
-    return result.data.choices[0].message?.content || "";
+    const resultString = result.data.choices[0].message?.content || "";
+
+    return resultString.replace(AS_A_REGEX, "");
   } catch (e: any) {
     const result = `An error occurred: ${e.message}`;
     log(result);
