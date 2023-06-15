@@ -31,7 +31,11 @@ export const getAIResponse = async (
 
     const openai = new OpenAIApi(configuration);
     const messages = getMessageChain(msgs, botId);
-    log(`Creating chat completion (${messages.length} messages)`);
+    log(
+      `Creating chat completion (${messages.length} total messages)`,
+      messages[messages.length - 1].content
+    );
+
     const result = await openai.createChatCompletion({
       messages,
       model: CONFIG.model,
@@ -39,9 +43,9 @@ export const getAIResponse = async (
       max_tokens: CONFIG.maxTokens,
     });
 
-    log(`Chat completion result`, result.data);
-
     const resultString = result.data.choices[0].message?.content || "";
+
+    log(`Chat completion result`, resultString);
 
     return resultString.replace(AS_A_REGEX, "");
   } catch (e: any) {
