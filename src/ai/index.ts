@@ -16,13 +16,14 @@ export const getAIResponse = async (
   botId: string
 ): Promise<string> => {
   try {
+    // Only use these on the _first_ message of a chain
     if (msgs.length === 1) {
       let newText = msgs[0].text;
 
-      if (CONFIG.prepend) {
+      if (CONFIG.prepend && !CONFIG.noPrependWords?.test(msgs[0].text)) {
         newText = CONFIG.prepend + " " + newText;
       }
-      if (CONFIG.append) {
+      if (CONFIG.append && !CONFIG.noAppendWords?.test(msgs[0].text)) {
         newText = newText + " " + CONFIG.append;
       }
       msgs[0].text = newText;

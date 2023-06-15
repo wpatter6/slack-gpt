@@ -14,4 +14,28 @@ export const getConfig = () => ({
     : 0,
   prepend: process.env.THREAD_PREPEND,
   append: process.env.THREAD_APPEND,
+  noPrependWords: !process.env.NO_PREPEND_WORDS
+    ? null
+    : new RegExp(
+        (process.env.NO_PREPEND_WORDS || "")
+          .split("")
+          .filter((v) => !!v)
+          .reduce((acc, curr) => {
+            if (!acc) return curr;
+            return `${acc}|${curr}`;
+          }, ""),
+        "i"
+      ),
+  noAppendWords: !process.env.NO_APPEND_WORDS
+    ? null
+    : new RegExp(
+        (process.env.NO_APPEND_WORDS || "")
+          .split("")
+          .filter((v) => !!v)
+          .reduce((acc, curr) => {
+            if (!acc) return curr;
+            return `${acc}|${curr}`;
+          }, ""),
+        "i"
+      ),
 });
