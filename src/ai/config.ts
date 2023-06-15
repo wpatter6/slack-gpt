@@ -18,7 +18,7 @@ export const getConfig = () => ({
     ? null
     : new RegExp(
         (process.env.NO_PREPEND_WORDS || "")
-          .split("")
+          .split(",")
           .filter((v) => !!v)
           .reduce((acc, curr) => {
             if (!acc) return curr;
@@ -30,7 +30,7 @@ export const getConfig = () => ({
     ? null
     : new RegExp(
         (process.env.NO_APPEND_WORDS || "")
-          .split("")
+          .split(",")
           .filter((v) => !!v)
           .reduce((acc, curr) => {
             if (!acc) return curr;
